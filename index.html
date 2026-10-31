@@ -82,9 +82,9 @@
                         <h1 class="text-lg font-bold tracking-tight bg-gradient-to-r from-indigo-600 to-emerald-500 dark:from-indigo-400 dark:to-emerald-400 bg-clip-text text-transparent">
                             TaskFlow <span class="font-normal text-xs px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-slate-700">360º Cloud</span>
                         </h1>
-                        <!-- Protected Room Badge & Switcher -->
-                        <button onclick="openRoomAuthModal(true)" class="flex items-center bg-indigo-500/10 hover:bg-indigo-500/20 dark:bg-indigo-500/15 dark:hover:bg-indigo-500/25 rounded-full px-3 py-0.5 border border-indigo-500/30 text-[11px] transition cursor-pointer" title="Sala protegida por senha • Clique para trocar de sala">
-                            <i class="fa-solid fa-lock text-indigo-500 mr-1.5 text-[10px]"></i>
+                        <!-- Room Badge & Switcher -->
+                        <button onclick="openRoomAuthModal(true)" class="flex items-center bg-indigo-500/10 hover:bg-indigo-500/20 dark:bg-indigo-500/15 dark:hover:bg-indigo-500/25 rounded-full px-3 py-0.5 border border-indigo-500/30 text-[11px] transition cursor-pointer" title="Clique para trocar de sala ou conta">
+                            <i class="fa-solid fa-door-open text-indigo-500 mr-1.5 text-[10px]"></i>
                             <span class="text-slate-500 dark:text-slate-400 mr-1 hidden sm:inline">Sala:</span>
                             <span id="headerRoomBadge" class="font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">GERAL</span>
                             <i class="fa-solid fa-chevron-down text-[9px] text-indigo-400 ml-1.5"></i>
@@ -104,7 +104,7 @@
                             <i id="forceSyncIcon" class="fa-solid fa-rotate text-[11px]"></i>
                         </button>
                     </div>
-                    <p id="lastSyncSubtext" class="text-xs text-slate-500 dark:text-slate-400 hidden sm:block">Sincronização multi-usuário ativa • Sala protegida por senha</p>
+                    <p id="lastSyncSubtext" class="text-xs text-slate-500 dark:text-slate-400 hidden sm:block">Sincronização multi-usuário ativa • Acesso protegido por login de usuário</p>
                 </div>
             </div>
 
@@ -554,24 +554,7 @@
                             </select>
                         </div>
                         <p id="roomsCountHint" class="text-[11px] text-slate-400 mt-1">
-                            Escolha uma das salas cadastradas na nuvem ou crie uma nova na aba ao lado.
-                        </p>
-                    </div>
-
-                    <!-- Room Password (Member or Admin) -->
-                    <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">
-                            Senha da Sala (Membro ou Administrador) *
-                        </label>
-                        <div class="relative">
-                            <i class="fa-solid fa-key absolute left-3.5 top-1/2 -translate-y-1/2 text-emerald-500 text-xs"></i>
-                            <input type="password" id="authJoinPassInput" placeholder="Digite a senha de acesso ou de admin da sala..." class="w-full pl-9 pr-10 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 focus:outline-none focus:border-indigo-500 text-sm">
-                            <button type="button" onclick="togglePasswordVisibility('authJoinPassInput', 'authJoinPassEye')" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
-                                <i id="authJoinPassEye" class="fa-regular fa-eye text-xs"></i>
-                            </button>
-                        </div>
-                        <p class="text-[11px] text-slate-400 mt-1">
-                            <i class="fa-solid fa-user-shield text-amber-500 mr-1"></i>Contas cadastradas como <strong>Administrador</strong> ou que usarem a Senha de Admin entram com controle total.
+                            Escolha uma das salas cadastradas na nuvem. O acesso exige apenas a sua <strong>Senha Pessoal</strong> acima.
                         </p>
                     </div>
                 </div>
@@ -650,7 +633,7 @@
                 <div id="authCreateSection" class="hidden space-y-3.5">
                     <div class="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-xs text-emerald-700 dark:text-emerald-300 flex items-start gap-2">
                         <i class="fa-solid fa-wand-magic-sparkles mt-0.5 text-emerald-500"></i>
-                        <span>A nova sala será criada na nuvem e começará <strong>100% vazia (sem tarefas de exemplo)</strong>.</span>
+                        <span>A nova sala será criada na nuvem sem senha de sala (acesso direto pelo seu Login de Usuário) e começará <strong>100% vazia</strong>.</span>
                     </div>
 
                     <div>
@@ -661,35 +644,6 @@
                             <i class="fa-solid fa-folder-plus absolute left-3.5 top-1/2 -translate-y-1/2 text-indigo-500 text-xs"></i>
                             <input type="text" id="authNewRoomNameInput" placeholder="Ex: CASA, TRABALHO, FACULDADE..." class="w-full pl-9 pr-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 focus:outline-none focus:border-indigo-500 text-sm font-bold uppercase tracking-wider">
                         </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">
-                            Senha de Acesso (Membros / Equipe) *
-                        </label>
-                        <div class="relative">
-                            <i class="fa-solid fa-key absolute left-3.5 top-1/2 -translate-y-1/2 text-emerald-500 text-xs"></i>
-                            <input type="password" id="authNewMemberPassInput" placeholder="Senha para os participantes entrarem..." class="w-full pl-9 pr-10 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 focus:outline-none focus:border-indigo-500 text-sm">
-                            <button type="button" onclick="togglePasswordVisibility('authNewMemberPassInput', 'authNewMemberEye')" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
-                                <i id="authNewMemberEye" class="fa-regular fa-eye text-xs"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-amber-600 dark:text-amber-400 mb-1">
-                            Senha de Administrador da Sala *
-                        </label>
-                        <div class="relative">
-                            <i class="fa-solid fa-user-shield absolute left-3.5 top-1/2 -translate-y-1/2 text-amber-500 text-xs"></i>
-                            <input type="password" id="authNewAdminPassInput" placeholder="Senha mestre p/ gerenciar ou limpar sala..." class="w-full pl-9 pr-10 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-amber-500/40 focus:outline-none focus:border-amber-500 text-sm">
-                            <button type="button" onclick="togglePasswordVisibility('authNewAdminPassInput', 'authNewAdminEye')" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
-                                <i id="authNewAdminEye" class="fa-regular fa-eye text-xs"></i>
-                            </button>
-                        </div>
-                        <p class="text-[11px] text-slate-400 mt-1">
-                            Permite alterar senhas da sala, apagar todas as tarefas ou excluir a sala.
-                        </p>
                     </div>
                 </div>
 
@@ -729,50 +683,15 @@
                     <!-- Populated via JS -->
                 </div>
 
-                <!-- Admin Password Verification Input -->
-                <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-amber-600 dark:text-amber-400 mb-1">
-                        Confirme a Senha de Administrador da Sala *
-                    </label>
-                    <div class="flex gap-2">
-                        <div class="relative flex-1">
-                            <i class="fa-solid fa-user-shield absolute left-3.5 top-1/2 -translate-y-1/2 text-amber-500 text-xs"></i>
-                            <input type="password" id="adminVerifyPassInput" placeholder="Digite a Senha de Administrador..." class="w-full pl-9 pr-4 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 focus:outline-none focus:border-amber-500 text-sm">
-                        </div>
-                        <button type="button" onclick="verifyAndActivateAdmin()" class="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold transition shadow-sm">
-                            Validar Admin
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Section 1: Change Room Passwords -->
-                <form onsubmit="handleAdminPasswordUpdate(event)" class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/80 space-y-3">
-                    <h4 class="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-200 flex items-center gap-1.5">
-                        <i class="fa-solid fa-key text-indigo-500"></i> Alterar Senhas da Sala
-                    </h4>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <div>
-                            <label class="block text-[11px] font-semibold text-slate-500 dark:text-slate-400 mb-1">Nova Senha de Membros *</label>
-                            <input type="password" id="adminNewMemberPassInput" required placeholder="Nova senha p/ membros..." class="w-full px-3 py-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs">
-                        </div>
-                        <div>
-                            <label class="block text-[11px] font-semibold text-slate-500 dark:text-slate-400 mb-1">Nova Senha de Admin (Opcional)</label>
-                            <input type="password" id="adminNewAdminPassInput" placeholder="Manter atual se vazio..." class="w-full px-3 py-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs">
-                        </div>
-                    </div>
-                    <div class="flex justify-end">
-                        <button type="submit" id="saveAdminPassBtn" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold transition">
-                            Salvar Novas Senhas
-                        </button>
-                    </div>
-                </form>
-
-                <!-- Section 2: Danger Zone (Clear All Tasks or Delete Room) -->
+                <!-- Section: Danger Zone (Clear All Tasks or Delete Room) -->
                 <div class="p-4 rounded-xl bg-rose-500/5 border border-rose-500/20 space-y-3">
                     <h4 class="text-xs font-bold uppercase tracking-wider text-rose-600 dark:text-rose-400 flex items-center gap-1.5">
-                        <i class="fa-solid fa-triangle-exclamation"></i> Ações Exclusivas do Administrador
+                        <i class="fa-solid fa-triangle-exclamation"></i> Ações Exclusivas de Contas Administradoras
                     </h4>
-                    <div class="flex flex-wrap items-center justify-between gap-2">
+                    <p class="text-xs text-slate-500 dark:text-slate-400">
+                        Usuários com perfil de <strong>Administrador</strong> podem limpar todas as tarefas desta sala ou excluí-la da lista.
+                    </p>
+                    <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
                         <button type="button" onclick="adminClearRoomTasks()" class="px-3.5 py-2 rounded-xl bg-rose-600/15 hover:bg-rose-600 hover:text-white text-rose-600 dark:text-rose-400 border border-rose-500/30 text-xs font-semibold transition flex items-center gap-1.5">
                             <i class="fa-solid fa-broom"></i> Limpar Todas as Tarefas da Sala
                         </button>
@@ -1206,8 +1125,7 @@ service cloud.firestore {
 
         function getCollectionName() {
             const cleanRoom = (currentWorkspace || 'geral').replace(/[^a-z0-9_-]/gi, '').toLowerCase() || 'geral';
-            const shortSig = (currentRoomPasswordHash || 'public').substring(0, 12);
-            return `tarefas_${cleanRoom}_${shortSig}`;
+            return `tarefas_${cleanRoom}`;
         }
 
         function getStorageKey() {
@@ -1440,7 +1358,7 @@ service cloud.firestore {
             const localConfigs = getLocalRoomConfigs();
             Object.keys(localConfigs).forEach(k => {
                 const item = localConfigs[k];
-                if (item && item.passwordHash) {
+                if (item && (item.id || item.roomName)) {
                     roomsMap[k] = item;
                 }
             });
@@ -1453,7 +1371,7 @@ service cloud.firestore {
                     const docs = data.documents || [];
                     docs.forEach(doc => {
                         const parsed = firestoreDocToTask(doc);
-                        if (parsed && parsed.id && parsed.passwordHash) {
+                        if (parsed && parsed.id) {
                             const cleanId = String(parsed.id).toLowerCase();
                             roomsMap[cleanId] = parsed;
                             saveLocalRoomConfig(cleanId, parsed);
@@ -1466,7 +1384,7 @@ service cloud.firestore {
                         const snap = await db.collection(ROOMS_CONFIG_COLLECTION).get();
                         snap.forEach(docSnap => {
                             const d = docSnap.data();
-                            if (d && d.id && d.passwordHash) {
+                            if (d && d.id) {
                                 const cleanId = String(d.id).toLowerCase();
                                 roomsMap[cleanId] = d;
                                 saveLocalRoomConfig(cleanId, d);
@@ -1498,14 +1416,14 @@ service cloud.firestore {
             if (rooms.length === 0) {
                 selectEl.innerHTML = `<option value="">Nenhuma sala encontrada — Crie a primeira sala!</option>`;
                 if (hintEl) {
-                    hintEl.innerHTML = `<span class="text-amber-500 font-medium"><i class="fa-solid fa-circle-info mr-1"></i>Ainda não há salas cadastradas. Clique na aba "Criar Nova Sala" acima.</span>`;
+                    hintEl.innerHTML = `<span class="text-amber-500 font-medium"><i class="fa-solid fa-circle-info mr-1"></i>Ainda não há salas cadastradas. Clique na aba "Nova Sala" acima.</span>`;
                 }
             } else {
                 selectEl.innerHTML = rooms.map(r => {
                     const code = String(r.id).toLowerCase();
                     const label = String(r.roomName || r.id).toUpperCase();
                     const creator = r.createdBy ? ` • Criada por ${escapeHtml(r.createdBy)}` : '';
-                    return `<option value="${escapeHtml(code)}">🔒 ${escapeHtml(label)}${creator}</option>`;
+                    return `<option value="${escapeHtml(code)}">📂 ${escapeHtml(label)}${creator}</option>`;
                 }).join('');
 
                 if (previousVal && rooms.some(r => String(r.id).toLowerCase() === previousVal.toLowerCase())) {
@@ -1515,7 +1433,7 @@ service cloud.firestore {
                 }
 
                 if (hintEl) {
-                    hintEl.textContent = `${rooms.length} sala(s) disponível(is) na lista suspensa.`;
+                    hintEl.textContent = `${rooms.length} sala(s) disponível(is). Basta informar sua senha de usuário acima para entrar.`;
                 }
             }
 
@@ -1569,7 +1487,7 @@ service cloud.firestore {
                 createBtn.className = 'py-2 px-2 rounded-lg text-[11px] sm:text-xs font-bold flex items-center justify-center gap-1.5 transition bg-white dark:bg-darkCard text-emerald-600 dark:text-emerald-400 shadow-sm';
                 credBlock.classList.remove('hidden');
                 createSec.classList.remove('hidden');
-                submitText.textContent = 'Criar Sala Vazia e Entrar como Admin';
+                submitText.textContent = 'Criar Sala Vazia e Entrar';
                 loadExistingUsersDropdown(false);
                 setTimeout(() => document.getElementById('authNewRoomNameInput')?.focus(), 50);
             }
@@ -1678,11 +1596,10 @@ service cloud.firestore {
                 closeBtn.classList.add('hidden');
             }
 
-            document.getElementById('authUserPassInput').value = '';
-            document.getElementById('authJoinPassInput').value = '';
-            document.getElementById('authNewRoomNameInput').value = '';
-            document.getElementById('authNewMemberPassInput').value = '';
-            document.getElementById('authNewAdminPassInput').value = '';
+            const passInput = document.getElementById('authUserPassInput');
+            if (passInput) passInput.value = '';
+            const roomNameInput = document.getElementById('authNewRoomNameInput');
+            if (roomNameInput) roomNameInput.value = '';
 
             modal.classList.remove('hidden');
             await Promise.all([
@@ -1889,44 +1806,26 @@ service cloud.firestore {
             // ================= MODE: JOIN EXISTING ROOM =================
             if (currentAuthMode === 'join') {
                 const selectedRoom = (document.getElementById('authRoomSelect').value || '').trim().toLowerCase();
-                const rawPass = document.getElementById('authJoinPassInput').value;
 
                 if (!selectedRoom) {
                     showAuthModalAlert('Selecione uma sala na lista suspensa ou clique na aba "Nova Sala".', 'error');
                     return;
                 }
-                if (!rawPass) {
-                    showAuthModalAlert('Digite a senha da sala (de membro ou de administrador).', 'error');
-                    return;
-                }
 
                 submitBtn.disabled = true;
-                submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i><span>Validando conta e senha da sala...</span>`;
+                submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i><span>Validando seu login de usuário...</span>`;
                 showAuthModalAlert('');
 
                 try {
                     const verifiedUser = await authenticateSelectedUserAccount();
                     if (!verifiedUser) return;
 
-                    const candidateMemberHash = await computeSha256Hex(`${selectedRoom}::${rawPass}`);
-                    const candidateAdminHash = await computeSha256Hex(`${selectedRoom}::admin::${rawPass}`);
-
                     const cloudCheck = await fetchRoomConfigFromCloud(selectedRoom);
                     const localConfigs = getLocalRoomConfigs();
                     const roomConfig = (cloudCheck.exists && cloudCheck.data) ? cloudCheck.data : localConfigs[selectedRoom];
 
-                    if (!roomConfig || !roomConfig.passwordHash) {
+                    if (!roomConfig) {
                         showAuthModalAlert(`A sala "${selectedRoom.toUpperCase()}" não foi encontrada. Atualize a lista ou crie a sala.`, 'error');
-                        return;
-                    }
-
-                    let loggedAsAdmin = false;
-                    if (roomConfig.adminPasswordHash && (candidateAdminHash === roomConfig.adminPasswordHash || candidateMemberHash === roomConfig.adminPasswordHash)) {
-                        loggedAsAdmin = true;
-                    } else if (candidateMemberHash === roomConfig.passwordHash) {
-                        loggedAsAdmin = verifiedUser.role === 'admin';
-                    } else {
-                        showAuthModalAlert(`Senha da sala incorreta para "${selectedRoom.toUpperCase()}".`, 'error');
                         return;
                     }
 
@@ -1935,9 +1834,9 @@ service cloud.firestore {
                     currentUserRole = verifiedUser.role || 'member';
                     currentUserPermissions = normalizePermissions(verifiedUser.permissions, currentUserRole);
                     currentWorkspace = selectedRoom;
-                    currentRoomPasswordHash = roomConfig.passwordHash;
-                    currentRoomAdminHash = roomConfig.adminPasswordHash || roomConfig.passwordHash;
-                    isCurrentUserAdmin = loggedAsAdmin || (currentUserRole === 'admin');
+                    currentRoomPasswordHash = 'open';
+                    currentRoomAdminHash = 'open';
+                    isCurrentUserAdmin = currentUserRole === 'admin';
                     isAuthenticated = true;
 
                     saveLocalRoomConfig(selectedRoom, roomConfig);
@@ -1955,16 +1854,10 @@ service cloud.firestore {
             } else {
                 // ================= MODE: CREATE NEW EMPTY ROOM =================
                 const rawNewRoom = document.getElementById('authNewRoomNameInput').value.trim();
-                const rawMemberPass = document.getElementById('authNewMemberPassInput').value;
-                const rawAdminPass = document.getElementById('authNewAdminPassInput').value;
-
                 const cleanRoom = rawNewRoom.replace(/[^a-z0-9_-]/gi, '').toLowerCase();
+
                 if (!cleanRoom) {
                     showAuthModalAlert('Informe um nome ou código válido para a nova sala.', 'error');
-                    return;
-                }
-                if (!rawMemberPass || !rawAdminPass) {
-                    showAuthModalAlert('Defina tanto a Senha de Membros quanto a Senha de Administrador.', 'error');
                     return;
                 }
 
@@ -1977,19 +1870,14 @@ service cloud.firestore {
                     if (!verifiedUser) return;
 
                     const cloudCheck = await fetchRoomConfigFromCloud(cleanRoom);
-                    if (cloudCheck.exists && cloudCheck.data && cloudCheck.data.passwordHash) {
+                    if (cloudCheck.exists && cloudCheck.data) {
                         showAuthModalAlert(`A sala "${cleanRoom.toUpperCase()}" já existe! Use a aba "Entrar" para acessá-la.`, 'error');
                         return;
                     }
 
-                    const memberHash = await computeSha256Hex(`${cleanRoom}::${rawMemberPass}`);
-                    const adminHash = await computeSha256Hex(`${cleanRoom}::admin::${rawAdminPass}`);
-
                     const newRoomConfig = {
                         id: cleanRoom,
                         roomName: cleanRoom.toUpperCase(),
-                        passwordHash: memberHash,
-                        adminPasswordHash: adminHash,
                         createdBy: verifiedUser.fullName || verifiedUser.id,
                         createdAt: Date.now()
                     };
@@ -2001,19 +1889,19 @@ service cloud.firestore {
                     currentUserRole = verifiedUser.role || 'member';
                     currentUserPermissions = normalizePermissions(verifiedUser.permissions, currentUserRole);
                     currentWorkspace = cleanRoom;
-                    currentRoomPasswordHash = memberHash;
-                    currentRoomAdminHash = adminHash;
-                    isCurrentUserAdmin = true;
+                    currentRoomPasswordHash = 'open';
+                    currentRoomAdminHash = 'open';
+                    isCurrentUserAdmin = currentUserRole === 'admin';
                     isAuthenticated = true;
 
                     tasks = [];
                     saveLocalCacheOnly();
 
                     finalizeLoginSession(remember);
-                    showToast(`Sala "${cleanRoom.toUpperCase()}" criada vazia! Conectado como Administrador (${currentAuthor}).`, 'success');
+                    showToast(`Sala "${cleanRoom.toUpperCase()}" criada vazia! Conectado como ${currentAuthor}.`, 'success');
                 } finally {
                     submitBtn.disabled = false;
-                    submitBtn.innerHTML = `<i class="fa-solid fa-right-to-bracket"></i><span id="authSubmitBtnText">Criar Sala Vazia e Entrar como Admin</span>`;
+                    submitBtn.innerHTML = `<i class="fa-solid fa-right-to-bracket"></i><span id="authSubmitBtnText">Criar Sala Vazia e Entrar</span>`;
                 }
             }
         }
@@ -2068,9 +1956,6 @@ service cloud.firestore {
                 return;
             }
             document.getElementById('adminModalRoomLabel').textContent = currentWorkspace.toUpperCase();
-            document.getElementById('adminVerifyPassInput').value = '';
-            document.getElementById('adminNewMemberPassInput').value = '';
-            document.getElementById('adminNewAdminPassInput').value = '';
             renderAdminBannerState();
             document.getElementById('adminPanelModal').classList.remove('hidden');
         }
@@ -2088,8 +1973,8 @@ service cloud.firestore {
                     <div class="flex items-center gap-2">
                         <i class="fa-solid fa-crown text-amber-500 text-base"></i>
                         <div>
-                            <p class="font-bold">Modo Administrador Ativo</p>
-                            <p class="text-[11px] opacity-90">Você tem permissão total para gerenciar senhas, limpar ou excluir a sala.</p>
+                            <p class="font-bold">Conta Administradora Ativa (${escapeHtml(currentAuthor)})</p>
+                            <p class="text-[11px] opacity-90">Você tem permissão total para gerenciar permissões de membros, limpar ou excluir a sala.</p>
                         </div>
                     </div>
                 `;
@@ -2097,105 +1982,19 @@ service cloud.firestore {
                 banner.className = 'p-3.5 rounded-xl border text-xs flex items-center justify-between gap-3 bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300';
                 banner.innerHTML = `
                     <div class="flex items-center gap-2">
-                        <i class="fa-solid fa-lock text-slate-400 text-base"></i>
+                        <i class="fa-solid fa-user text-slate-400 text-base"></i>
                         <div>
-                            <p class="font-bold">Conectado como Membro</p>
-                            <p class="text-[11px] opacity-90">Informe a Senha de Administrador abaixo para desbloquear as funções administrativas.</p>
+                            <p class="font-bold">Conectado como Membro (${escapeHtml(currentAuthor)})</p>
+                            <p class="text-[11px] opacity-90">Apenas contas cadastradas com perfil de Administrador podem limpar ou excluir salas.</p>
                         </div>
                     </div>
                 `;
             }
         }
 
-        async function checkAdminPasswordMatch(rawAdminPass) {
-            if (!rawAdminPass) return false;
-            const hashAdminFormat = await computeSha256Hex(`${currentWorkspace}::admin::${rawAdminPass}`);
-            const hashLegacyFormat = await computeSha256Hex(`${currentWorkspace}::${rawAdminPass}`);
-
-            const cloudCheck = await fetchRoomConfigFromCloud(currentWorkspace);
-            const targetAdminHash = (cloudCheck.exists && cloudCheck.data && cloudCheck.data.adminPasswordHash)
-                ? cloudCheck.data.adminPasswordHash
-                : (currentRoomAdminHash || currentRoomPasswordHash);
-
-            return hashAdminFormat === targetAdminHash || hashLegacyFormat === targetAdminHash;
-        }
-
-        async function verifyAndActivateAdmin() {
-            const rawPass = document.getElementById('adminVerifyPassInput').value;
-            if (!rawPass) {
-                showToast('Digite a Senha de Administrador da sala.', 'error');
-                return;
-            }
-            const ok = await checkAdminPasswordMatch(rawPass);
-            if (!ok) {
-                showToast('Senha de Administrador incorreta!', 'error');
-                return;
-            }
-            isCurrentUserAdmin = true;
-            updateHeaderSessionUI();
-            renderAdminBannerState();
-            showToast('Modo Administrador desbloqueado nesta sessão!', 'success');
-        }
-
-        async function handleAdminPasswordUpdate(event) {
-            event.preventDefault();
-            const rawAdminPass = document.getElementById('adminVerifyPassInput').value;
-            const newMemberPass = document.getElementById('adminNewMemberPassInput').value;
-            const newAdminPass = document.getElementById('adminNewAdminPassInput').value;
-            const btn = document.getElementById('saveAdminPassBtn');
-
-            const isVerified = isCurrentUserAdmin || (await checkAdminPasswordMatch(rawAdminPass));
-            if (!isVerified) {
-                showToast('Confirme a Senha de Administrador atual para alterar as senhas da sala.', 'error');
-                return;
-            }
-
-            if (!newMemberPass) {
-                showToast('Informe a nova senha de membros.', 'error');
-                return;
-            }
-
-            btn.disabled = true;
-            btn.textContent = 'Atualizando...';
-
-            try {
-                const oldTasksCopy = JSON.parse(JSON.stringify(tasks));
-                const newMemberHash = await computeSha256Hex(`${currentWorkspace}::${newMemberPass}`);
-                const updatedAdminHash = newAdminPass
-                    ? await computeSha256Hex(`${currentWorkspace}::admin::${newAdminPass}`)
-                    : (currentRoomAdminHash || newMemberHash);
-
-                await saveRoomConfigToCloud(currentWorkspace, {
-                    id: currentWorkspace,
-                    roomName: currentWorkspace.toUpperCase(),
-                    passwordHash: newMemberHash,
-                    adminPasswordHash: updatedAdminHash,
-                    updatedBy: currentAuthor,
-                    updatedAt: Date.now()
-                });
-
-                currentRoomPasswordHash = newMemberHash;
-                currentRoomAdminHash = updatedAdminHash;
-                isCurrentUserAdmin = true;
-                tasks = oldTasksCopy;
-                saveLocalCacheOnly();
-
-                finalizeLoginSession(true);
-                await syncLocalToCloud(true);
-
-                closeAdminPanelModal();
-                showToast(`Senhas da sala "${currentWorkspace.toUpperCase()}" atualizadas pelo Administrador!`, 'success');
-            } finally {
-                btn.disabled = false;
-                btn.textContent = 'Salvar Novas Senhas';
-            }
-        }
-
         async function adminClearRoomTasks() {
-            const rawAdminPass = document.getElementById('adminVerifyPassInput').value;
-            const isVerified = isCurrentUserAdmin || (await checkAdminPasswordMatch(rawAdminPass));
-            if (!isVerified) {
-                showToast('Valide a Senha de Administrador no campo acima antes de limpar a sala.', 'error');
+            if (!isCurrentUserAdmin) {
+                showToast('Apenas usuários com conta de Administrador podem limpar todas as tarefas da sala.', 'error');
                 return;
             }
             closeAdminPanelModal();
@@ -2203,10 +2002,8 @@ service cloud.firestore {
         }
 
         async function adminDeleteEntireRoom() {
-            const rawAdminPass = document.getElementById('adminVerifyPassInput').value;
-            const isVerified = isCurrentUserAdmin || (await checkAdminPasswordMatch(rawAdminPass));
-            if (!isVerified) {
-                showToast('Valide a Senha de Administrador no campo acima para excluir a sala.', 'error');
+            if (!isCurrentUserAdmin) {
+                showToast('Apenas usuários com conta de Administrador podem excluir a sala.', 'error');
                 return;
             }
 
@@ -2938,14 +2735,14 @@ service cloud.firestore {
                 const rawSession = localStorage.getItem(SESSION_KEY);
                 if (rawSession) {
                     const session = JSON.parse(rawSession);
-                    if (session && session.user && session.room && session.passHash) {
+                    if (session && session.user && session.room) {
                         currentAuthor = session.user;
                         currentUserLogin = session.userLogin || '';
                         currentUserRole = session.userRole || (session.isAdmin ? 'admin' : 'member');
                         currentUserPermissions = normalizePermissions(session.userPermissions, currentUserRole);
                         currentWorkspace = session.room;
-                        currentRoomPasswordHash = session.passHash;
-                        currentRoomAdminHash = session.adminHash || session.passHash;
+                        currentRoomPasswordHash = 'open';
+                        currentRoomAdminHash = 'open';
                         isCurrentUserAdmin = Boolean(session.isAdmin || currentUserRole === 'admin');
                         isAuthenticated = true;
 
