@@ -151,10 +151,12 @@
                         <button onclick="openRoomAuthModal(true)" class="w-full text-left px-4 py-2 text-sm hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2.5 text-slate-700 dark:text-slate-200">
                             <i class="fa-solid fa-door-open text-indigo-500 w-4"></i> Trocar Sala ou Conta
                         </button>
-                        <button onclick="openUserDirectoryModal()" class="w-full text-left px-4 py-2 text-sm hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2.5 text-slate-700 dark:text-slate-200">
-                            <i class="fa-solid fa-users-gear text-emerald-500 w-4"></i> Cadastro & Permissões de Membros
+                        <button id="menuUserDirBtn" onclick="openUserDirectoryModal()" class="hidden w-full text-left px-4 py-2 text-sm hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2.5 text-slate-700 dark:text-slate-200">
+                            <i class="fa-solid fa-users-gear text-emerald-500 w-4"></i>
+                            <span>Cadastro & Permissões (Admin)</span>
+                            <span id="pendingUsersBadgeMenu" class="hidden ml-auto px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500 text-white">0</span>
                         </button>
-                        <button onclick="openAdminPanelModal()" class="w-full text-left px-4 py-2 text-sm hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2.5 text-slate-700 dark:text-slate-200">
+                        <button id="menuAdminPanelBtn" onclick="openAdminPanelModal()" class="hidden w-full text-left px-4 py-2 text-sm hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2.5 text-slate-700 dark:text-slate-200">
                             <i class="fa-solid fa-user-shield text-amber-500 w-4"></i> Painel do Administrador
                         </button>
                         <hr class="my-1 border-slate-200 dark:border-slate-700">
@@ -487,7 +489,7 @@
                     <i class="fa-solid fa-user-plus"></i> <span>Cadastrar Conta</span>
                 </button>
                 <button type="button" id="authTabCreateBtn" onclick="switchAuthTab('create')" class="py-2 px-2 rounded-lg text-[11px] sm:text-xs font-bold flex items-center justify-center gap-1.5 transition text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">
-                    <i class="fa-solid fa-folder-plus"></i> <span>Nova Sala</span>
+                    <i class="fa-solid fa-crown text-amber-500"></i> <span>Nova Sala (Admin)</span>
                 </button>
             </div>
 
@@ -562,8 +564,8 @@
                 <!-- ================= TAB 2: REGISTER USER / ADMIN ACCOUNT ================= -->
                 <div id="authRegisterUserSection" class="hidden space-y-3.5">
                     <div class="p-3 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-xs text-indigo-700 dark:text-indigo-300 flex items-start gap-2">
-                        <i class="fa-solid fa-user-check mt-0.5 text-indigo-500"></i>
-                        <span>Cadastre sua conta de <strong>Usuário (Membro)</strong> ou <strong>Administrador</strong> na nuvem para acessar as salas e ser atribuído em tarefas.</span>
+                        <i class="fa-solid fa-user-shield mt-0.5 text-indigo-500"></i>
+                        <span><strong>Autorização do Administrador Obrigatória:</strong> Todo novo cadastro precisa ser autorizado por um Administrador (informando a senha do Admin abaixo ou enviando solicitação para aprovação no painel do Administrador).</span>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -611,29 +613,29 @@
                         </div>
                     </div>
 
-                    <!-- Shown when role == 'admin' -->
-                    <div id="regAdminSecretContainer" class="hidden p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30 space-y-2">
+                    <!-- Shown for all registrations: Admin password for instant activation OR leave blank to request approval -->
+                    <div id="regAdminSecretContainer" class="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30 space-y-2">
                         <label class="block text-xs font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400">
-                            <i class="fa-solid fa-crown mr-1"></i> Chave Mestre de Administrador do Sistema *
+                            <i class="fa-solid fa-user-check mr-1"></i> Senha do Administrador (Para Liberação Imediata)
                         </label>
                         <div class="relative">
                             <i class="fa-solid fa-key absolute left-3.5 top-1/2 -translate-y-1/2 text-amber-500 text-xs"></i>
-                            <input type="password" id="regAdminMasterKeyInput" placeholder="Se for o 1º Admin, defina a chave mestre aqui..." class="w-full pl-9 pr-10 py-2 rounded-xl bg-white dark:bg-slate-800 border border-amber-500/40 focus:outline-none focus:border-amber-500 text-xs">
+                            <input type="password" id="regAdminMasterKeyInput" placeholder="Senha do Admin (ou deixe em branco p/ solicitar aprovação)..." class="w-full pl-9 pr-10 py-2 rounded-xl bg-white dark:bg-slate-800 border border-amber-500/40 focus:outline-none focus:border-amber-500 text-xs">
                             <button type="button" onclick="togglePasswordVisibility('regAdminMasterKeyInput', 'regAdminMasterEye')" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
                                 <i id="regAdminMasterEye" class="fa-regular fa-eye text-xs"></i>
                             </button>
                         </div>
                         <p id="regAdminKeyHint" class="text-[11px] text-amber-700 dark:text-amber-300">
-                            Se ainda não houver Administrador cadastrado, a senha digitada acima passará a ser a Chave Mestre oficial. Caso já exista um Admin, informe a mesma senha de um Admin existente.
+                            Peça a um Administrador para digitar a senha dele aqui para ativar sua conta na hora, ou deixe em branco para enviar seu cadastro para a fila de aprovação do Administrador.
                         </p>
                     </div>
                 </div>
 
                 <!-- ================= TAB 3: CREATE NEW EMPTY ROOM ================= -->
                 <div id="authCreateSection" class="hidden space-y-3.5">
-                    <div class="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-xs text-emerald-700 dark:text-emerald-300 flex items-start gap-2">
-                        <i class="fa-solid fa-wand-magic-sparkles mt-0.5 text-emerald-500"></i>
-                        <span>A nova sala será criada na nuvem sem senha de sala (acesso direto pelo seu Login de Usuário) e começará <strong>100% vazia</strong>.</span>
+                    <div class="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-xs text-amber-700 dark:text-amber-300 flex items-start gap-2">
+                        <i class="fa-solid fa-crown mt-0.5 text-amber-500"></i>
+                        <span><strong>Exclusivo para Administradores:</strong> Apenas contas com perfil de <strong>Administrador</strong> podem criar novas salas. A sala começará <strong>100% vazia</strong>.</span>
                     </div>
 
                     <div>
@@ -1240,6 +1242,18 @@ service cloud.firestore {
             );
             registeredUsersCache = list;
 
+            // Update pending badge for admins
+            const pendingCount = list.filter(u => u.status === 'pending').length;
+            const pendingBadge = document.getElementById('pendingUsersBadgeMenu');
+            if (pendingBadge) {
+                if (pendingCount > 0 && isCurrentUserAdmin) {
+                    pendingBadge.textContent = pendingCount;
+                    pendingBadge.classList.remove('hidden');
+                } else {
+                    pendingBadge.classList.add('hidden');
+                }
+            }
+
             // Keep active logged-in user's permissions synced in real time if updated by an Admin
             if (currentUserLogin) {
                 const me = list.find(u => String(u.id).toLowerCase() === String(currentUserLogin).toLowerCase());
@@ -1291,10 +1305,12 @@ service cloud.firestore {
         function populateAuthorsDatalist() {
             const dl = document.getElementById('registeredUsersDatalist');
             if (!dl) return;
-            dl.innerHTML = registeredUsersCache.map(u => {
-                const roleLabel = u.role === 'admin' ? 'Administrador' : 'Membro';
-                return `<option value="${escapeHtml(u.fullName || u.id)}">@${escapeHtml(u.id)} (${roleLabel})</option>`;
-            }).join('');
+            dl.innerHTML = registeredUsersCache
+                .filter(u => u.status !== 'pending')
+                .map(u => {
+                    const roleLabel = u.role === 'admin' ? 'Administrador' : 'Membro';
+                    return `<option value="${escapeHtml(u.fullName || u.id)}">@${escapeHtml(u.id)} (${roleLabel})</option>`;
+                }).join('');
         }
 
         async function loadExistingUsersDropdown(showFeedback = false) {
@@ -1314,7 +1330,10 @@ service cloud.firestore {
                 selectEl.innerHTML = users.map(u => {
                     const login = String(u.id).toLowerCase();
                     const name = u.fullName || login;
-                    const badge = u.role === 'admin' ? '👑 ADMIN' : '👤 Membro';
+                    const isPending = u.status === 'pending';
+                    const badge = isPending
+                        ? '⏳ Aguardando Aprovação do Admin'
+                        : (u.role === 'admin' ? '👑 ADMIN' : '👤 Membro');
                     return `<option value="${escapeHtml(login)}">${escapeHtml(name)} (@${escapeHtml(login)}) — ${badge}</option>`;
                 }).join('');
 
@@ -1325,6 +1344,8 @@ service cloud.firestore {
                 }
             }
 
+            updateCreateRoomTabVisibilityBySelectedUser();
+
             if (showFeedback) {
                 showToast(`${users.length} conta(s) carregada(s).`, 'info');
             }
@@ -1332,24 +1353,42 @@ service cloud.firestore {
 
         function handleUserSelectChange() {
             showAuthModalAlert('');
+            updateCreateRoomTabVisibilityBySelectedUser();
+        }
+
+        function updateCreateRoomTabVisibilityBySelectedUser() {
+            const selectEl = document.getElementById('authUserSelect');
+            const createTabBtn = document.getElementById('authTabCreateBtn');
+            if (!selectEl || !createTabBtn) return;
+
+            const selectedLogin = (selectEl.value || '').trim().toLowerCase();
+            const userObj = registeredUsersCache.find(u => String(u.id).toLowerCase() === selectedLogin);
+            const isSelectedAdmin = userObj && userObj.role === 'admin' && userObj.status !== 'pending';
+
+            if (isSelectedAdmin) {
+                createTabBtn.classList.remove('opacity-50');
+                createTabBtn.title = 'Criar nova sala vazia (Administrador)';
+            } else {
+                createTabBtn.classList.add('opacity-50');
+                createTabBtn.title = 'Apenas contas de Administrador podem criar novas salas';
+            }
         }
 
         function toggleRegAdminKeyField() {
             const roleSel = document.getElementById('regUserRoleSelect');
             const box = document.getElementById('regAdminSecretContainer');
             const hint = document.getElementById('regAdminKeyHint');
-            if (!roleSel || !box) return;
+            if (!roleSel || !box || !hint) return;
 
-            if (roleSel.value === 'admin') {
-                box.classList.remove('hidden');
-                const existingAdmins = registeredUsersCache.filter(u => u.role === 'admin');
-                if (existingAdmins.length === 0) {
-                    hint.innerHTML = `<i class="fa-solid fa-sparkles mr-1"></i><strong>Primeiro Administrador do sistema!</strong> Digite qualquer código ou senha para autorizar seu cadastro de Administrador.`;
-                } else {
-                    hint.innerHTML = `Já existe(m) <strong>${existingAdmins.length} Administrador(es)</strong> cadastrado(s). Informe a senha de um Administrador existente para autorizar um novo perfil Admin.`;
-                }
+            box.classList.remove('hidden');
+            const existingAdmins = registeredUsersCache.filter(u => u.role === 'admin' && u.status !== 'pending');
+
+            if (existingAdmins.length === 0) {
+                hint.innerHTML = `<i class="fa-solid fa-sparkles mr-1"></i><strong>Primeiro Administrador do sistema!</strong> Como ainda não há Administrador cadastrado, a primeira conta será autorizada automaticamente como Administrador.`;
+            } else if (roleSel.value === 'admin') {
+                hint.innerHTML = `<i class="fa-solid fa-crown mr-1"></i>Para cadastrar um novo <strong>Administrador</strong>, digite a senha de um Administrador ativo (ou deixe em branco para solicitar aprovação de um Admin).`;
             } else {
-                box.classList.add('hidden');
+                hint.innerHTML = `<i class="fa-solid fa-shield-halved mr-1"></i>Digite a senha de um Administrador para <strong>liberar o cadastro imediatamente</strong>, ou deixe em branco para enviar seu cadastro para <strong>aprovação do Administrador</strong>.`;
             }
         }
 
@@ -1487,8 +1526,13 @@ service cloud.firestore {
                 createBtn.className = 'py-2 px-2 rounded-lg text-[11px] sm:text-xs font-bold flex items-center justify-center gap-1.5 transition bg-white dark:bg-darkCard text-emerald-600 dark:text-emerald-400 shadow-sm';
                 credBlock.classList.remove('hidden');
                 createSec.classList.remove('hidden');
-                submitText.textContent = 'Criar Sala Vazia e Entrar';
+                submitText.textContent = 'Criar Sala Vazia (Exclusivo Admin)';
                 loadExistingUsersDropdown(false);
+                const selectedLogin = (document.getElementById('authUserSelect')?.value || '').trim().toLowerCase();
+                const userObj = registeredUsersCache.find(u => String(u.id).toLowerCase() === selectedLogin);
+                if (userObj && userObj.role !== 'admin') {
+                    showAuthModalAlert('Atenção: A conta selecionada é de Membro. Selecione uma conta de Administrador acima para criar uma nova sala.', 'error');
+                }
                 setTimeout(() => document.getElementById('authNewRoomNameInput')?.focus(), 50);
             }
         }
@@ -1644,23 +1688,37 @@ service cloud.firestore {
             const adminIcon = document.getElementById('headerAdminIcon');
             const adminText = document.getElementById('headerAdminText');
             const menuPill = document.getElementById('menuRolePill');
+            const menuUserDirBtn = document.getElementById('menuUserDirBtn');
+            const menuAdminPanelBtn = document.getElementById('menuAdminPanelBtn');
 
             if (isCurrentUserAdmin) {
-                if (adminBadge) adminBadge.className = 'inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/30 hover:bg-amber-500/25 transition cursor-pointer';
+                if (adminBadge) {
+                    adminBadge.className = 'inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/30 hover:bg-amber-500/25 transition cursor-pointer';
+                    adminBadge.onclick = () => openUserDirectoryModal();
+                    adminBadge.title = 'Abrir Gestão de Permissões e Painel Admin';
+                }
                 if (adminIcon) adminIcon.className = 'fa-solid fa-crown text-[10px] text-amber-500';
                 if (adminText) adminText.textContent = 'Admin';
                 if (menuPill) {
                     menuPill.className = 'text-[10px] px-2 py-0.5 rounded-full font-bold bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/30';
                     menuPill.textContent = 'ADMIN';
                 }
+                if (menuUserDirBtn) menuUserDirBtn.classList.remove('hidden');
+                if (menuAdminPanelBtn) menuAdminPanelBtn.classList.remove('hidden');
             } else {
-                if (adminBadge) adminBadge.className = 'inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700 hover:border-amber-500/40 transition cursor-pointer';
-                if (adminIcon) adminIcon.className = 'fa-solid fa-user-shield text-[10px] text-slate-400';
+                if (adminBadge) {
+                    adminBadge.className = 'inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700 cursor-default';
+                    adminBadge.onclick = null;
+                    adminBadge.title = 'Conectado como Membro';
+                }
+                if (adminIcon) adminIcon.className = 'fa-solid fa-user text-[10px] text-slate-400';
                 if (adminText) adminText.textContent = 'Membro';
                 if (menuPill) {
                     menuPill.className = 'text-[10px] px-2 py-0.5 rounded-full font-bold bg-slate-100 dark:bg-slate-800 text-slate-500';
                     menuPill.textContent = 'MEMBRO';
                 }
+                if (menuUserDirBtn) menuUserDirBtn.classList.add('hidden');
+                if (menuAdminPanelBtn) menuAdminPanelBtn.classList.add('hidden');
             }
 
             // Update New Task button state based on canCreate permission
@@ -1702,6 +1760,11 @@ service cloud.firestore {
                 return null;
             }
 
+            if (userRecord.status === 'pending') {
+                showAuthModalAlert(`O cadastro de "${userRecord.fullName || selectedLogin}" ainda está AGUARDANDO AUTORIZAÇÃO de um Administrador. Peça ao Administrador para aprovar sua conta no menu "Cadastro & Permissões".`, 'error');
+                return null;
+            }
+
             return userRecord;
         }
 
@@ -1730,7 +1793,7 @@ service cloud.firestore {
                 }
 
                 submitBtn.disabled = true;
-                submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i><span>Cadastrando conta na nuvem...</span>`;
+                submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i><span>Processando cadastro na nuvem...</span>`;
                 showAuthModalAlert('');
 
                 try {
@@ -1741,34 +1804,39 @@ service cloud.firestore {
                         return;
                     }
 
-                    if (role === 'admin') {
-                        const existingAdmins = registeredUsersCache.filter(u => u.role === 'admin');
-                        if (existingAdmins.length > 0) {
-                            if (!adminMasterKey) {
-                                showAuthModalAlert('Para cadastrar um novo Administrador, informe a senha de um Administrador já existente.', 'error');
-                                return;
-                            }
-                            let authorizedByExistingAdmin = false;
-                            for (const adm of existingAdmins) {
-                                const testHash = await computeSha256Hex(`user::${adm.id}::${adminMasterKey}`);
-                                if (testHash === adm.passwordHash) {
-                                    authorizedByExistingAdmin = true;
-                                    break;
-                                }
-                            }
-                            if (!authorizedByExistingAdmin) {
-                                showAuthModalAlert('Chave Mestre / Senha de Administrador inválida! Não foi possível autorizar perfil Admin.', 'error');
-                                return;
+                    const existingAdmins = registeredUsersCache.filter(u => u.role === 'admin' && u.status !== 'pending');
+                    let accountStatus = 'pending';
+                    let finalRole = role;
+
+                    if (existingAdmins.length === 0) {
+                        // First account in the system becomes active Admin automatically so the system isn't locked
+                        accountStatus = 'active';
+                        finalRole = 'admin';
+                    } else if (adminMasterKey) {
+                        let authorizedByExistingAdmin = false;
+                        for (const adm of existingAdmins) {
+                            const testHash = await computeSha256Hex(`user::${adm.id}::${adminMasterKey}`);
+                            if (testHash === adm.passwordHash) {
+                                authorizedByExistingAdmin = true;
+                                break;
                             }
                         }
+                        if (!authorizedByExistingAdmin) {
+                            showAuthModalAlert('Senha de Administrador incorreta! Digite a senha correta de um Administrador para liberar na hora ou deixe o campo em branco para enviar solicitação de aprovação.', 'error');
+                            return;
+                        }
+                        accountStatus = 'active';
+                    } else {
+                        accountStatus = 'pending';
                     }
 
                     const userPassHash = await computeSha256Hex(`user::${cleanLogin}::${rawPass}`);
                     const newUserObj = {
                         id: cleanLogin,
                         fullName,
-                        role,
-                        permissions: normalizePermissions(DEFAULT_MEMBER_PERMISSIONS, role),
+                        role: finalRole,
+                        status: accountStatus,
+                        permissions: normalizePermissions(DEFAULT_MEMBER_PERMISSIONS, finalRole),
                         passwordHash: userPassHash,
                         createdAt: Date.now()
                     };
@@ -1786,88 +1854,98 @@ service cloud.firestore {
                     document.getElementById('regUserPassInput').value = '';
                     document.getElementById('regAdminMasterKeyInput').value = '';
 
-                    if (availableRoomsCache.length === 0) {
-                        switchAuthTab('create');
-                    } else {
+                    if (accountStatus === 'pending') {
                         switchAuthTab('join');
+                        showAuthModalAlert(
+                            `Solicitação de cadastro para "${fullName}" (@${cleanLogin}) enviada! Um Administrador precisa autorizar sua conta no painel "Cadastro & Permissões" antes do seu primeiro acesso.`,
+                            'info'
+                        );
+                    } else {
+                        if (availableRoomsCache.length === 0 && finalRole === 'admin') {
+                            switchAuthTab('create');
+                        } else {
+                            switchAuthTab('join');
+                        }
+                        showAuthModalAlert(
+                            `Conta "${fullName}" (@${cleanLogin}) autorizada e ativada como ${finalRole === 'admin' ? 'ADMINISTRADOR' : 'MEMBRO'}! Agora basta entrar na sala desejada.`,
+                            'success'
+                        );
                     }
-
-                    showAuthModalAlert(
-                        `Conta "${fullName}" (@${cleanLogin}) cadastrada como ${role === 'admin' ? 'ADMINISTRADOR' : 'USUÁRIO'}! Agora selecione ou crie uma sala abaixo.`,
-                        'success'
-                    );
                 } finally {
                     submitBtn.disabled = false;
-                    submitBtn.innerHTML = `<i class="fa-solid fa-right-to-bracket"></i><span id="authSubmitBtnText">${currentAuthMode === 'create' ? 'Criar Sala Vazia e Entrar como Admin' : 'Entrar na Sala Selecionada'}</span>`;
+                    submitBtn.innerHTML = `<i class="fa-solid fa-right-to-bracket"></i><span id="authSubmitBtnText">${currentAuthMode === 'create' ? 'Criar Sala Vazia (Exclusivo Admin)' : 'Entrar na Sala Selecionada'}</span>`;
                 }
                 return;
             }
 
-            // ================= MODE: JOIN EXISTING ROOM =================
+            // ================= MODE: JOIN EXISTING ROOM (MEMBERS & ADMINS) =================
             if (currentAuthMode === 'join') {
                 const selectedRoom = (document.getElementById('authRoomSelect').value || '').trim().toLowerCase();
 
                 if (!selectedRoom) {
-                    showAuthModalAlert('Selecione uma sala na lista suspensa ou clique na aba "Nova Sala".', 'error');
+                    showAuthModalAlert('Selecione uma sala já criada na lista suspensa.', 'error');
                     return;
                 }
 
                 submitBtn.disabled = true;
-                submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i><span>Validando seu login de usuário...</span>`;
+                submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i><span>Validando acesso à sala...</span>`;
                 showAuthModalAlert('');
 
                 try {
                     const verifiedUser = await authenticateSelectedUserAccount();
                     if (!verifiedUser) return;
 
-                    const cloudCheck = await fetchRoomConfigFromCloud(selectedRoom);
-                    const localConfigs = getLocalRoomConfigs();
-                    const roomConfig = (cloudCheck.exists && cloudCheck.data) ? cloudCheck.data : localConfigs[selectedRoom];
-
-                    if (!roomConfig) {
-                        showAuthModalAlert(`A sala "${selectedRoom.toUpperCase()}" não foi encontrada. Atualize a lista ou crie a sala.`, 'error');
-                        return;
+                    const cleanRoom = selectedRoom.replace(/[^a-z0-9_-]/gi, '').toLowerCase();
+                    const cloudCheck = await fetchRoomConfigFromCloud(cleanRoom);
+                    if (!cloudCheck.exists && !cloudCheck.offline) {
+                        const existsLocally = availableRoomsCache.some(r => String(r.id).toLowerCase() === cleanRoom);
+                        if (!existsLocally) {
+                            showAuthModalAlert(`A sala "${cleanRoom.toUpperCase()}" não foi encontrada.`, 'error');
+                            return;
+                        }
                     }
 
                     currentAuthor = verifiedUser.fullName || verifiedUser.id;
                     currentUserLogin = verifiedUser.id;
                     currentUserRole = verifiedUser.role || 'member';
                     currentUserPermissions = normalizePermissions(verifiedUser.permissions, currentUserRole);
-                    currentWorkspace = selectedRoom;
+                    currentWorkspace = cleanRoom;
                     currentRoomPasswordHash = 'open';
                     currentRoomAdminHash = 'open';
                     isCurrentUserAdmin = currentUserRole === 'admin';
                     isAuthenticated = true;
 
-                    saveLocalRoomConfig(selectedRoom, roomConfig);
                     finalizeLoginSession(remember);
-                    showToast(
-                        isCurrentUserAdmin
-                            ? `Conectado à sala "${selectedRoom.toUpperCase()}" como ADMINISTRADOR (${currentAuthor})!`
-                            : `Bem-vindo(a) à sala "${selectedRoom.toUpperCase()}", ${currentAuthor}!`,
-                        'success'
-                    );
+                    showToast(`Bem-vindo(a), ${currentAuthor}! Você entrou na sala "${cleanRoom.toUpperCase()}".`, 'success');
                 } finally {
                     submitBtn.disabled = false;
                     submitBtn.innerHTML = `<i class="fa-solid fa-right-to-bracket"></i><span id="authSubmitBtnText">Entrar na Sala Selecionada</span>`;
                 }
-            } else {
-                // ================= MODE: CREATE NEW EMPTY ROOM =================
-                const rawNewRoom = document.getElementById('authNewRoomNameInput').value.trim();
-                const cleanRoom = rawNewRoom.replace(/[^a-z0-9_-]/gi, '').toLowerCase();
+                return;
+            }
+
+            // ================= MODE: CREATE NEW ROOM (ADMIN ONLY) =================
+            if (currentAuthMode === 'create') {
+                const rawRoomName = (document.getElementById('authNewRoomNameInput').value || '').trim();
+                const cleanRoom = rawRoomName.replace(/[^a-z0-9_-]/gi, '').toLowerCase();
 
                 if (!cleanRoom) {
-                    showAuthModalAlert('Informe um nome ou código válido para a nova sala.', 'error');
+                    showAuthModalAlert('Digite o nome/código da nova sala que deseja criar.', 'error');
                     return;
                 }
 
                 submitBtn.disabled = true;
-                submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i><span>Validando usuário e criando sala vazia...</span>`;
+                submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i><span>Criando nova sala vazia...</span>`;
                 showAuthModalAlert('');
 
                 try {
                     const verifiedUser = await authenticateSelectedUserAccount();
                     if (!verifiedUser) return;
+
+                    if (verifiedUser.role !== 'admin') {
+                        showAuthModalAlert('Acesso negado: Apenas usuários com perfil de ADMINISTRADOR podem criar novas salas. Membros devem usar a aba "Entrar" para acessar salas já criadas.', 'error');
+                        return;
+                    }
 
                     const cloudCheck = await fetchRoomConfigFromCloud(cleanRoom);
                     if (cloudCheck.exists && cloudCheck.data) {
@@ -1901,7 +1979,7 @@ service cloud.firestore {
                     showToast(`Sala "${cleanRoom.toUpperCase()}" criada vazia! Conectado como ${currentAuthor}.`, 'success');
                 } finally {
                     submitBtn.disabled = false;
-                    submitBtn.innerHTML = `<i class="fa-solid fa-right-to-bracket"></i><span id="authSubmitBtnText">Criar Sala Vazia e Entrar</span>`;
+                    submitBtn.innerHTML = `<i class="fa-solid fa-right-to-bracket"></i><span id="authSubmitBtnText">Criar Sala Vazia (Exclusivo Admin)</span>`;
                 }
             }
         }
@@ -1953,6 +2031,10 @@ service cloud.firestore {
         function openAdminPanelModal() {
             if (!isAuthenticated) {
                 openRoomAuthModal(false);
+                return;
+            }
+            if (!isCurrentUserAdmin) {
+                showToast('Acesso restrito: Apenas Administradores podem acessar o Painel do Administrador.', 'error');
                 return;
             }
             document.getElementById('adminModalRoomLabel').textContent = currentWorkspace.toUpperCase();
@@ -2089,6 +2171,14 @@ service cloud.firestore {
         }
 
         async function openUserDirectoryModal() {
+            if (!isAuthenticated) {
+                openRoomAuthModal(false);
+                return;
+            }
+            if (!isCurrentUserAdmin) {
+                showToast('Acesso restrito: O ambiente de permissões é exclusivo para Administradores.', 'error');
+                return;
+            }
             document.getElementById('userDirectoryModal').classList.remove('hidden');
             renderMyActivePermsBanner();
             await refreshUserDirectoryList();
@@ -2128,6 +2218,7 @@ service cloud.firestore {
             container.innerHTML = users.map(u => {
                 const login = String(u.id).toLowerCase();
                 const isAdm = u.role === 'admin';
+                const isPending = u.status === 'pending';
                 const isSelf = login === String(currentUserLogin).toLowerCase();
                 const perms = normalizePermissions(u.permissions, u.role);
                 const initials = String(u.fullName || login)
@@ -2138,16 +2229,25 @@ service cloud.firestore {
                     .join('') || 'U';
 
                 return `
-                    <div class="p-4 flex flex-col gap-3 hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition">
+                    <div class="p-4 flex flex-col gap-3 ${isPending ? 'bg-amber-500/5 border-l-4 border-l-amber-500' : 'hover:bg-slate-50/80 dark:hover:bg-slate-800/40'} transition">
                         <div class="flex flex-wrap items-center justify-between gap-3">
                             <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-full ${isAdm ? 'bg-amber-500/20 text-amber-500 border border-amber-500/30' : 'bg-indigo-500/15 text-indigo-500 border border-indigo-500/20'} flex items-center justify-center text-xs font-bold">
+                                <div class="w-10 h-10 rounded-full ${isPending ? 'bg-amber-500/20 text-amber-500 border border-amber-500/40' : (isAdm ? 'bg-amber-500/20 text-amber-500 border border-amber-500/30' : 'bg-indigo-500/15 text-indigo-500 border border-indigo-500/20')} flex items-center justify-center text-xs font-bold">
                                     ${escapeHtml(initials)}
                                 </div>
                                 <div>
                                     <div class="flex flex-wrap items-center gap-2">
                                         <span class="text-sm font-bold text-slate-800 dark:text-slate-100">${escapeHtml(u.fullName || login)}</span>
                                         ${isSelf ? `<span class="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-500 font-semibold">Você</span>` : ''}
+                                        ${isPending ? `
+                                            <span class="text-[10px] px-2 py-0.5 rounded-full font-bold bg-amber-500 text-white animate-pulse">
+                                                <i class="fa-solid fa-clock mr-1"></i>AGUARDANDO AUTORIZAÇÃO DO ADMIN
+                                            </span>
+                                        ` : `
+                                            <span class="text-[10px] px-2 py-0.5 rounded-full font-bold bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30">
+                                                <i class="fa-solid fa-circle-check mr-1"></i>Autorizado
+                                            </span>
+                                        `}
                                         <span class="text-[10px] px-2 py-0.5 rounded-full font-bold ${isAdm ? 'bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/30' : 'bg-slate-100 dark:bg-slate-800 text-slate-500'}">
                                             ${isAdm ? '<i class="fa-solid fa-crown mr-1"></i>ADMINISTRADOR' : '<i class="fa-solid fa-user mr-1"></i>MEMBRO'}
                                         </span>
@@ -2157,6 +2257,15 @@ service cloud.firestore {
                             </div>
 
                             <div class="flex flex-wrap items-center gap-2">
+                                ${isCurrentUserAdmin && isPending ? `
+                                    <button type="button" onclick="approvePendingUser('${escapeHtml(login)}')" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white shadow-sm transition flex items-center gap-1.5">
+                                        <i class="fa-solid fa-user-check"></i> Autorizar Cadastro
+                                    </button>
+                                    <button type="button" onclick="deleteDirectoryUser('${escapeHtml(login)}')" class="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-rose-500/10 hover:bg-rose-600 text-rose-600 hover:text-white border border-rose-500/30 transition flex items-center gap-1">
+                                        <i class="fa-solid fa-user-xmark"></i> Recusar
+                                    </button>
+                                ` : ''}
+
                                 ${isCurrentUserAdmin && !isAdm ? `
                                     <select onchange="applyMemberPermissionPreset('${escapeHtml(login)}', this.value)" class="px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 focus:outline-none">
                                         <option value="">⚡ Aplicar Perfil Rápido...</option>
@@ -2171,7 +2280,7 @@ service cloud.firestore {
                                     <button type="button" onclick="toggleDirectoryUserRole('${escapeHtml(login)}')" class="px-2.5 py-1 rounded-lg text-[11px] font-semibold border ${isAdm ? 'border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800' : 'border-amber-500/30 bg-amber-500/10 text-amber-600 dark:text-amber-400 hover:bg-amber-500/20'} transition" title="Alternar entre Usuário Membro e Administrador">
                                         <i class="fa-solid fa-user-gear mr-1"></i>${isAdm ? 'Tornar Membro' : 'Tornar Admin'}
                                     </button>
-                                    ${!isSelf ? `
+                                    ${!isSelf && !isPending ? `
                                         <button type="button" onclick="deleteDirectoryUser('${escapeHtml(login)}')" class="p-1.5 rounded-lg text-slate-400 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition" title="Remover cadastro">
                                             <i class="fa-solid fa-trash-can text-xs"></i>
                                         </button>
@@ -2314,9 +2423,10 @@ service cloud.firestore {
                     id: cleanLogin,
                     fullName,
                     role,
+                    status: 'active',
                     permissions: customPermissions,
                     passwordHash: passHash,
-                    createdBy: currentAuthor || 'Sistema',
+                    createdBy: currentAuthor || 'Administrador',
                     createdAt: Date.now()
                 };
 
@@ -2325,10 +2435,27 @@ service cloud.firestore {
                 document.getElementById('dirUsernameInput').value = '';
                 document.getElementById('dirPasswordInput').value = '';
                 await refreshUserDirectoryList();
-                showToast(`Cadastro e permissões de "${fullName}" (@${cleanLogin}) salvos com sucesso!`, 'success');
+                showToast(`Cadastro e permissões de "${fullName}" (@${cleanLogin}) autorizados e salvos!`, 'success');
             } finally {
                 btn.disabled = false;
             }
+        }
+
+        async function approvePendingUser(usernameKey) {
+            if (!isCurrentUserAdmin) {
+                showToast('Apenas Administradores podem autorizar novos cadastros.', 'error');
+                return;
+            }
+            const user = registeredUsersCache.find(u => String(u.id).toLowerCase() === usernameKey.toLowerCase());
+            if (!user) return;
+
+            user.status = 'active';
+            user.approvedBy = currentAuthor || currentUserLogin;
+            user.updatedAt = Date.now();
+
+            await saveUserAccountToCloud(usernameKey.toLowerCase(), user);
+            await refreshUserDirectoryList();
+            showToast(`Cadastro de "${user.fullName || usernameKey}" autorizado com sucesso!`, 'success');
         }
 
         async function toggleDirectoryUserRole(usernameKey) {
